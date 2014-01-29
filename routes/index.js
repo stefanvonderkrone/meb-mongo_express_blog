@@ -16,9 +16,11 @@ function authenticate(email, pass, fn) {
             hash( pass, user.salt, function( err, hash ) {
                 if ( err ) {
                     fn( err );
+                    return;
                 } else if ( hash === user.hash ) {
                     console.log( "SUCCESSFULL!!!" );
                     fn( null, user );
+                    return;
                 }
                 fn( new Error("Invalid password!") );
             } );
@@ -83,6 +85,10 @@ exports.postUpdatePost = function(req, res) {
 };
 
 exports.postLogin = function(req, res) {
+    var writeHead = res.writeHead;
+    res.writeHead = function() {
+        return writeHead.apply(res, arguments);
+    };
     authenticate( req.body.email, req.body.password, function( err, user ) {
         if ( user ) {
             console.log("REGENERATING SESSION");
@@ -93,9 +99,12 @@ exports.postLogin = function(req, res) {
                 console.log("SETTING USER");
                 req.session.user = user;
                 req.session.success = "authenticated";
+                req.session.save( function() {
+                    res.redirect("/");
+                } );
                 console.log("THE SESSION:", req.session);
                 console.log("THE SESSION_ID:", req.sessionID);
-                res.redirect("/");
+                //res.redirect("/");
             } );
         } else {
             req.session.error = "access denied";

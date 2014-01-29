@@ -54,6 +54,7 @@ app.use(express.session({
  * middleware to check, wether current user is logged in or not
  **/
 app.use(function(req, res, next){
+  var m = memStore;
   console.log("");
   console.log("SESSION_ID:", req.sessionID);
   console.log("");
