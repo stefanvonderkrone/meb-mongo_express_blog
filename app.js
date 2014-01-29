@@ -9,8 +9,6 @@ var http = require('http');
 var path = require('path');
 var exphbs = require('express3-handlebars');
 var hash = require("./libs/pass").hash;
-var MemoryStore = require("./node_modules/express/node_modules/connect/lib/middleware/session/memory.js");
-var memStore = new MemoryStore();
 // mongodb
 var mongo = require("mongodb");
 var monk = require("monk");
@@ -46,15 +44,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.bodyParser());
 app.use(express.cookieParser('meb-secret-key'));
-app.use(express.session({
-  store: memStore
-}));
+app.use(express.session());
 
 /**
  * middleware to check, wether current user is logged in or not
  **/
 app.use(function(req, res, next){
-  var m = memStore;
   console.log("");
   console.log("SESSION_ID:", req.sessionID);
   console.log("");

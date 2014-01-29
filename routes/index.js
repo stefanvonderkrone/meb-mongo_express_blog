@@ -85,10 +85,6 @@ exports.postUpdatePost = function(req, res) {
 };
 
 exports.postLogin = function(req, res) {
-    var writeHead = res.writeHead;
-    res.writeHead = function() {
-        return writeHead.apply(res, arguments);
-    };
     authenticate( req.body.email, req.body.password, function( err, user ) {
         if ( user ) {
             console.log("REGENERATING SESSION");
