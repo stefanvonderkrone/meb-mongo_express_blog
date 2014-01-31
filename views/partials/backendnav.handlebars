@@ -1,0 +1,6 @@
+<ul class="nav nav-tabs">
+    <li class="{{#if isOverview}}active{{/if}}"><a href="/backend">Overview</a></li>
+    <li class="{{#if isNewPost}}active{{/if}}"><a href="/backend/newpost">New Post</a></li>
+    {{#if isUpdatePost}}<li class="active">Update Post</li>{{/if}}
+    <li class="{{#if isCreateUser}}active{{/if}}"><a href="/backend/createuser">Create a User</a></li>
+</ul>

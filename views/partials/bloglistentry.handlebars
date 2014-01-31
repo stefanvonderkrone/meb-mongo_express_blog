@@ -1,0 +1,43 @@
+<!-- 
+  required: {
+    title: "",
+    url: "",
+    thumbURL: "",
+    excerpt: ""
+  }
+ -->
+
+<div class="row">
+  <div class="span8">
+    <div class="row">
+      <div class="span8">
+        <h4><strong><a href="{{url}}">{{title}}</a></strong></h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span2">
+        <a href="{{url}}" class="thumbnail">
+            <img src="{{thumbURL}}" alt="">
+        </a>
+      </div>
+      <div class="span6">
+        <p>{{excerpt}}</p>
+        <p><a class="btn" href="{{url}}">more...</a></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span8">
+        <p></p>
+        <p>
+          <i class="icon-user"></i> by <a href="{{userPostsURL}}">{{userName}}</a> 
+          | <i class="icon-calendar"></i> {{postDate}}
+          | <i class="icon-comment"></i> <a href="#">{{commentsCount}}</a>
+          | <i class="icon-tags"></i> Tags : {{#each tags}}
+            <a href="{{tagURL}}"><span class="label label-info">{{tagName}}</span></a>
+          {{/each}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>

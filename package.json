@@ -11,6 +11,7 @@
     "less-middleware": "*",
     "crypto": "*",
     "mongodb": "*",
-    "monk": "*"
+    "monk": "*",
+    "lodash": "*"
   }
 }

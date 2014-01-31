@@ -50,9 +50,6 @@ app.use(express.session());
  * middleware to check, wether current user is logged in or not
  **/
 app.use(function(req, res, next){
-  console.log("");
-  console.log("SESSION_ID:", req.sessionID);
-  console.log("");
   var err = req.session.error
     , msg = req.session.success;
   delete req.session.error;
@@ -60,7 +57,7 @@ app.use(function(req, res, next){
   res.locals.message = '';
   if (err) res.locals.message = '<p class="msg error">' + err + '</p>';
   if (msg) res.locals.message = '<p class="msg success">' + msg + '</p>';
-  console.log("session:", req.session);
+  res.locals.loggedIn = !!req.session.user;
   next();
 });
 
@@ -87,8 +84,9 @@ app.get('/backend/createuser', routes.getCreateUser);
 app.get('/backend/newpost', routes.getNewPost );
 app.get('/backend/updatepost/:post_id', routes.getUpdatePost);
 app.get('/posts', routes.getPosts);
-app.get('/posts/:page', routes.getPostsAtPage);
+app.get('/posts/:page_index', routes.getPostsAtPage);
 app.get('/post/:post_id', routes.getPost );
+app.get('/tag/:tag_name', routes.getTag);
 app.get('/login', routes.getLogin);
 app.get('/logout', routes.getLogout);
 
@@ -129,12 +127,9 @@ app.post('/login', routes.postLogin);
 }());
 
 // development only
-// if ('development' == app.get('env')) {
-//   app.use(express.errorHandler());
-// }
-
-// app.get('/', routes.index);
-// app.get('/users', user.list);
+if ('development' == app.get('env')) {
+  app.use(express.errorHandler());
+}
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
