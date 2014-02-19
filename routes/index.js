@@ -131,7 +131,45 @@ exports.getLogout = function(req, res) {
 };
 
 exports.postCreateUser = function(req, res) {
-
+    var email = req.body.email,
+        pass0 = req.body.password,
+        pass1 = req.body.password2;
+    if ( pass0 !== pass1 ) {
+        res.render( "createuser", {
+            message: "Passwords don't match!"
+        } );
+    } else {
+        var users = _db.get("users");
+        users.findOne( { email: email }, function( error, user ) {
+            if ( !!user ) {
+                res.render( "createuser", {
+                    message: "User already exists"
+                } );
+            } else {
+                hash( pass0, function( error, salt, hash ) {
+                    if ( !!error ) {
+                        res.render( "createuser", {
+                            message: "Couldn't add user! Sorry!"
+                        } );
+                    }
+                    users.insert( {
+                        email: email,
+                        salt: salt,
+                        hash: hash
+                    }, function( error, doc ) {
+                        if ( !!error ) {
+                            res.render( "createuser", {
+                                message: "Couldn't add user! Sorry!"
+                            } );
+                        }
+                        res.render( "createuser", {
+                            message: "User successfully created!"
+                        } );
+                    } )
+                } );
+            }
+        } );
+    }
 };
 
 exports.postAddPost = function(req, res) {
